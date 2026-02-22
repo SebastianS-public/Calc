@@ -75,55 +75,94 @@ def add_input_row(fieldname, default_value, area):
     row_frame.pack(fill="x", pady=2)
     tk.Label(row_frame, text=fieldname, width=15, anchor="e").pack(side="left", padx=5)
     tk.Entry(row_frame, textvariable=new_var).pack(side="left", fill="x", expand=True, padx=5)
+    main_container.update_idletasks()
+    canvas.configure(scrollregion=canvas.bbox("all"))
 
 
+# --- Main Application Setup ---
 root = tk.Tk()
 root.title("Dynamic Input List")
-root.geometry("400x500")
+root.geometry("420x550") 
 
 input_variables = {
     "Stunden1": [],
     "Stunden2": []
 }
 
-main_container = tk.Frame(root)
-main_container.pack(fill="both", expand=True, padx=10, pady=10)
+# --- Scrollable Area Setup ---
+# 1. Create an outer frame to hold the Canvas and Scrollbar
+canvas_frame = tk.Frame(root)
+canvas_frame.pack(fill="both", expand=True, padx=5, pady=5)
 
+# 2. Create the Canvas and Scrollbar
+canvas = tk.Canvas(canvas_frame, highlightthickness=0)
+scrollbar = tk.Scrollbar(canvas_frame, orient="vertical", command=canvas.yview)
+
+# 3. Create the inner frame that will actually hold our widgets
+main_container = tk.Frame(canvas)
+
+# 4. Bind the inner frame to the canvas
+canvas_window = canvas.create_window((0, 0), window=main_container, anchor="nw")
+
+# 5. Configure Canvas scrolling behavior
+canvas.configure(yscrollcommand=scrollbar.set)
+main_container.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+
+# Make sure the inner frame expands to the width of the canvas
+canvas.bind("<Configure>", lambda e: canvas.itemconfig(canvas_window, width=e.width))
+
+# Pack the canvas and scrollbar
+scrollbar.pack(side="right", fill="y")
+canvas.pack(side="left", fill="both", expand=True)
+# -----------------------------
+
+shared_label = tk.Label(main_container, text="Shared Areas", font=("Arial", 12, "bold"))
+shared_label.pack(side="top", pady=(10, 0))
+separator1 = tk.Frame(main_container, bg="gray", height=2)
+separator1.pack(side="top", fill="x", pady=(5, 10))
+
+# --- Setup Areas inside the Scrollable main_container ---
 area1_frame = tk.Frame(main_container)
-area1_frame.pack(side="top", fill="both", expand=True)
+area1_frame.pack(side="top", fill="both", expand=True, pady=5)
 
-separator = tk.Frame(main_container, bg="gray", height=2)
-separator.pack(side="top", fill="x", pady=15)
+other_label = tk.Label(main_container, text="Other Areas", font=("Arial", 12, "bold"))
+other_label.pack(side="top", pady=(20, 0))
+separator2 = tk.Frame(main_container, bg="gray", height=2)
+separator2.pack(side="top", fill="x", pady=15)
 
 area2_frame = tk.Frame(main_container)
-area2_frame.pack(side="top", fill="both", expand=True)
+area2_frame.pack(side="top", fill="both", expand=True, pady=5)
 
+# Populate initial rows
 saved_minlohn = load_config()
 add_input_row("Mindestlohn:", saved_minlohn, 1)
 add_input_row("Auszahlungsbetrag:", "", 1)
 add_input_row("Stunden:", "", 1)
 add_input_row("Stunden:", "", 2)
 
+# --- Fixed Bottom Elements ---
 button_frame = tk.Frame(root)
 button_frame.pack(fill="x", pady=10)
 
 add_btn1 = tk.Button(
     button_frame,
-    text="Add Row to Area 1",
+    text="Add Row to Shared Area",
     command=lambda: add_input_row("Stunden:", "", 1)
 )
 add_btn1.pack(side="left", padx=10)
+
 add_btn2 = tk.Button(
     button_frame,
-    text="Add Row to Area 2",
+    text="Add Row to Other Areas",
     command=lambda: add_input_row("Stunden:", "", 2)
 )
 add_btn2.pack(side="left", padx=10)
 
 submit_btn = tk.Button(button_frame, text="Calculate", command=process_inputs)
 submit_btn.pack(side="right", padx=10)
+
 result_var = tk.StringVar(value="Überweisung: 0.00€")
 result_label = tk.Label(root, textvariable=result_var, font=("Arial", 12, "bold"))
-result_label.pack(side="bottom", pady=20)
+result_label.pack(side="bottom", pady=10)
 
 root.mainloop()
