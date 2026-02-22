@@ -95,7 +95,7 @@ def add_input_row(fieldname, default_value, area):
 
 # --- Main Application Setup ---
 root = tk.Tk()
-root.title("Dynamic Input List")
+root.title("Auszahlungsrechner")
 root.geometry("420x550") 
 
 input_variables = {
@@ -193,4 +193,5 @@ result_label = tk.Label(root, textvariable=result_var, font=("Arial", 12, "bold"
 result_label.pack(side="bottom", pady=10)
 
 root.mainloop()
+
 
