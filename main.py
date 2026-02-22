@@ -69,8 +69,12 @@ def add_input_row(fieldname, default_value, area):
     else:
         clean_name = fieldname.replace(":", "").strip()
         input_variables[clean_name] = new_var
-
-    target_frame = area2_frame if area == 2 else area3_frame
+    if area == 1:
+        target_frame = area1_frame
+    elif area == 2:
+        target_frame = area2_frame
+    else:
+        target_frame = area3_frame
     row_frame = tk.Frame(target_frame)
     row_frame.pack(fill="x", pady=2)
     tk.Label(row_frame, text=fieldname, width=15, anchor="e").pack(side="left", padx=5)
@@ -171,6 +175,7 @@ result_label = tk.Label(root, textvariable=result_var, font=("Arial", 12, "bold"
 result_label.pack(side="bottom", pady=10)
 
 root.mainloop()
+
 
 
 
