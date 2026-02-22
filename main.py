@@ -7,11 +7,11 @@ CONFIG_FILE = "config.json"
 
 def on_mousewheel(event):
     """Handles mouse wheel scrolling across different operating systems."""
+    if scrollbar.get() == (0.0, 1.0):
+        return
     if event.num == 4 or event.delta > 0:
-        # Scroll up (Linux uses num=4, Windows/Mac use positive delta)
         canvas.yview_scroll(-1, "units")
     elif event.num == 5 or event.delta < 0:
-        # Scroll down (Linux uses num=5, Windows/Mac use negative delta)
         canvas.yview_scroll(1, "units")
 
 
@@ -193,3 +193,4 @@ result_label = tk.Label(root, textvariable=result_var, font=("Arial", 12, "bold"
 result_label.pack(side="bottom", pady=10)
 
 root.mainloop()
+
