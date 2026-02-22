@@ -62,7 +62,7 @@ def process_inputs():
 def add_input_row(fieldname, default_value, area):
     new_var = tk.StringVar(value=default_value if default_value is not None else "")
     if "Stunden" in fieldname:
-        if area == 1:
+        if area == 2:
             input_variables["Stunden1"].append(new_var)
         else:
             input_variables["Stunden2"].append(new_var)
@@ -116,6 +116,9 @@ scrollbar.pack(side="right", fill="y")
 canvas.pack(side="left", fill="both", expand=True)
 # -----------------------------
 
+# --- Setup Areas inside the Scrollable main_container ---
+area1_frame = tk.Frame(main_container)
+area1_frame.pack(side="top", fill="both", expand=True, pady=5)
 
 saved_minlohn = load_config()
 add_input_row("Mindestlohn:", saved_minlohn, 1)
@@ -127,20 +130,20 @@ separator1 = tk.Frame(main_container, bg="gray", height=2)
 separator1.pack(side="top", fill="x", pady=(5, 10))
 
 # --- Setup Areas inside the Scrollable main_container ---
-area1_frame = tk.Frame(main_container)
-area1_frame.pack(side="top", fill="both", expand=True, pady=5)
+area2_frame = tk.Frame(main_container)
+area2_frame.pack(side="top", fill="both", expand=True, pady=5)
 
 other_label = tk.Label(main_container, text="Other Areas", font=("Arial", 12, "bold"))
 other_label.pack(side="top", pady=(20, 0))
 separator2 = tk.Frame(main_container, bg="gray", height=2)
 separator2.pack(side="top", fill="x", pady=15)
 
-area2_frame = tk.Frame(main_container)
-area2_frame.pack(side="top", fill="both", expand=True, pady=5)
+area3_frame = tk.Frame(main_container)
+area3_frame.pack(side="top", fill="both", expand=True, pady=5)
 
 # Populate initial rows
-add_input_row("Stunden:", "", 1)
 add_input_row("Stunden:", "", 2)
+add_input_row("Stunden:", "", 3)
 
 # --- Fixed Bottom Elements ---
 button_frame = tk.Frame(root)
@@ -149,14 +152,14 @@ button_frame.pack(fill="x", pady=10)
 add_btn1 = tk.Button(
     button_frame,
     text="Add Row to Shared Area",
-    command=lambda: add_input_row("Stunden:", "", 1)
+    command=lambda: add_input_row("Stunden:", "", 2)
 )
 add_btn1.pack(side="left", padx=10)
 
 add_btn2 = tk.Button(
     button_frame,
     text="Add Row to Other Areas",
-    command=lambda: add_input_row("Stunden:", "", 2)
+    command=lambda: add_input_row("Stunden:", "", 3)
 )
 add_btn2.pack(side="left", padx=10)
 
@@ -168,4 +171,5 @@ result_label = tk.Label(root, textvariable=result_var, font=("Arial", 12, "bold"
 result_label.pack(side="bottom", pady=10)
 
 root.mainloop()
+
 
