@@ -30,7 +30,7 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Build EXE with PyInstaller
       run: |
-        pyinstaller --noconfirm --onefile --windowed app.py
+        pyinstaller --noconfirm --onefile --windowed main.py
     - name: Upload EXE as Artifact
       uses: actions/upload-artifact@v4
       with:
