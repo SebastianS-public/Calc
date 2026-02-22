@@ -5,6 +5,16 @@ import json
 CONFIG_FILE = "config.json"
 
 
+def on_mousewheel(event):
+    """Handles mouse wheel scrolling across different operating systems."""
+    if event.num == 4 or event.delta > 0:
+        # Scroll up (Linux uses num=4, Windows/Mac use positive delta)
+        canvas.yview_scroll(-1, "units")
+    elif event.num == 5 or event.delta < 0:
+        # Scroll down (Linux uses num=5, Windows/Mac use negative delta)
+        canvas.yview_scroll(1, "units")
+
+
 def load_config():
     """Loads the Mindestlohn from the config file, or returns the default."""
     if os.path.exists(CONFIG_FILE):
@@ -112,6 +122,14 @@ canvas_window = canvas.create_window((0, 0), window=main_container, anchor="nw")
 canvas.configure(yscrollcommand=scrollbar.set)
 main_container.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
 
+# --- NEW MOUSEWHEEL CODE HERE ---
+# Bind for Windows and macOS
+root.bind_all("<MouseWheel>", on_mousewheel)
+# Bind for Linux 
+root.bind_all("<Button-4>", on_mousewheel)
+root.bind_all("<Button-5>", on_mousewheel)
+# --------------------------------
+
 # Make sure the inner frame expands to the width of the canvas
 canvas.bind("<Configure>", lambda e: canvas.itemconfig(canvas_window, width=e.width))
 
@@ -175,7 +193,3 @@ result_label = tk.Label(root, textvariable=result_var, font=("Arial", 12, "bold"
 result_label.pack(side="bottom", pady=10)
 
 root.mainloop()
-
-
-
-
