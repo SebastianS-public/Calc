@@ -116,6 +116,11 @@ scrollbar.pack(side="right", fill="y")
 canvas.pack(side="left", fill="both", expand=True)
 # -----------------------------
 
+
+saved_minlohn = load_config()
+add_input_row("Mindestlohn:", saved_minlohn, 1)
+add_input_row("Auszahlungsbetrag:", "", 1)
+
 shared_label = tk.Label(main_container, text="Shared Areas", font=("Arial", 12, "bold"))
 shared_label.pack(side="top", pady=(10, 0))
 separator1 = tk.Frame(main_container, bg="gray", height=2)
@@ -134,9 +139,6 @@ area2_frame = tk.Frame(main_container)
 area2_frame.pack(side="top", fill="both", expand=True, pady=5)
 
 # Populate initial rows
-saved_minlohn = load_config()
-add_input_row("Mindestlohn:", saved_minlohn, 1)
-add_input_row("Auszahlungsbetrag:", "", 1)
 add_input_row("Stunden:", "", 1)
 add_input_row("Stunden:", "", 2)
 
@@ -166,3 +168,4 @@ result_label = tk.Label(root, textvariable=result_var, font=("Arial", 12, "bold"
 result_label.pack(side="bottom", pady=10)
 
 root.mainloop()
+
