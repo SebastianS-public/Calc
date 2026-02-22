@@ -56,6 +56,7 @@ def process_inputs():
     sum_stunden2_val = sum(stunden2_floats) * minlohn
     realbetrag = sum_stunden1_val + sum_stunden2_val
     diff = (auszahlung - realbetrag) / 3 + sum_stunden1_val / 2
+    result_var.set(f"Überweisung: {diff:.2f}€")
 
 
 def add_input_row(fieldname, default_value, area):
@@ -121,5 +122,8 @@ add_btn2.pack(side="left", padx=10)
 
 submit_btn = tk.Button(button_frame, text="Calculate", command=process_inputs)
 submit_btn.pack(side="right", padx=10)
+result_var = tk.StringVar(value="Überweisung: 0.00€")
+result_label = tk.Label(root, textvariable=result_var, font=("Arial", 12, "bold"))
+result_label.pack(side="bottom", pady=20)
 
 root.mainloop()
