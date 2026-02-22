@@ -64,13 +64,13 @@ def add_input_row(fieldname, default_value, area):
     if "Stunden" in fieldname:
         if area == 2:
             input_variables["Stunden1"].append(new_var)
-        else:
+        elif area == 3:
             input_variables["Stunden2"].append(new_var)
     else:
         clean_name = fieldname.replace(":", "").strip()
         input_variables[clean_name] = new_var
 
-    target_frame = area1_frame if area == 1 else area2_frame
+    target_frame = area2_frame if area == 2 else area3_frame
     row_frame = tk.Frame(target_frame)
     row_frame.pack(fill="x", pady=2)
     tk.Label(row_frame, text=fieldname, width=15, anchor="e").pack(side="left", padx=5)
@@ -171,5 +171,6 @@ result_label = tk.Label(root, textvariable=result_var, font=("Arial", 12, "bold"
 result_label.pack(side="bottom", pady=10)
 
 root.mainloop()
+
 
 
